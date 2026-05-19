@@ -8,5 +8,6 @@ int main() {
     t.wait();
     std::cout << "5 seconds elapsed." << '\n';
     std::cout << "Hello, World!" << '\n';
+    std::cout << "This is a guide on making tea" <<'\n';
     return 0;
 }
