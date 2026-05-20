@@ -33,14 +33,14 @@ int main(int argc, char* argv[]) {
             // Read user input into buffer
             std::cout << "Enter message to the server: ";
             char buffer[MAX_BUFFER_SIZE];
-            std::cin >> buffer;
+            std::cin.getline(buffer, 512);
 
             std::error_code error_code;
             size_t send_to_server = asio::write(client_socket, asio::buffer(buffer, MAX_BUFFER_SIZE));
 
             // Wait for response from server
             char server_buffer[MAX_BUFFER_SIZE];
-            size_t received_message = asio::write(client_socket, asio::buffer(server_buffer, MAX_BUFFER_SIZE), error_code);
+            size_t received_message =  client_socket.read_some(asio::buffer(server_buffer, MAX_BUFFER_SIZE), error_code);
 
             // Check if the server has closed the connection or not
             if (error_code == asio::error::eof) {
@@ -50,6 +50,8 @@ int main(int argc, char* argv[]) {
             else if (error_code) {
                 throw std::system_error(error_code);
             }
+
+            server_buffer[received_message] = '\0';
 
             std::cout << "Server Response: " << server_buffer << '\n';
         }
