@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "asio.hpp"
+#define MAX_BUFFER_SIZE 512
 
 using asio::ip::tcp;
 
@@ -31,23 +32,23 @@ int main()
             acceptor.accept(socket);
             std::cout << "client has connected :) " << "\n";
 
-            //message to send
-            std::string message = "Hello from server\n";
+            for (;;) {
+                //message to send
+                std::string message = "Hello from server\n";
 
-            std::error_code ignored_error;
+                std::error_code ignored_error;
 
-            asio::write(socket, asio::buffer(message), ignored_error);
+                asio::write(socket, asio::buffer(message), ignored_error);
 
-            //read client response
-            char data[512];
+                //read client response
+                char data[MAX_BUFFER_SIZE];
 
-            size_t length = socket.read_some(asio::buffer(data));
-            data[length] = '\0';
-            std::cout << "client says: " << data << "\n";
-            
-
-            std::cout << "message sent" << "\n";
-
+                size_t length = socket.read_some(asio::buffer(data, MAX_BUFFER_SIZE), ignored_error);
+                data[length] = '\0';
+                std::cout << "client says: " << data << "\n";
+                if (ignored_error == asio::error::eof) break;
+                std::cout << "message sent" << "\n";
+            }
             //socket closes here
         }
     }

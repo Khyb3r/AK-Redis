@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
             std::cin.getline(buffer, 512);
 
             std::error_code error_code;
-            size_t send_to_server = asio::write(client_socket, asio::buffer(buffer, MAX_BUFFER_SIZE));
+            size_t send_to_server = asio::write(client_socket, asio::buffer(buffer, std::strlen(buffer)));
 
             // Wait for response from server
             char server_buffer[MAX_BUFFER_SIZE];
