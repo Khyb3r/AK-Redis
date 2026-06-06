@@ -19,7 +19,21 @@ class server{
          tcp_connection:: create(io_context_);
 
         acceptor_.async_accept(new_connection->socket(),
-          std::bind(&server::handle_accept,this, new connection,
+          std::bind(&server::handle_accept,this, new_connection,
                asio::placeholders::error));
     }
+
+    void handle_accept(tcp_connection::pointer new_connection, 
+        const std::error_code& error)
+    {
+        if(!error)
+        {
+            new_connection->start();
+        }
+
+        start_accept();
+
+    }
+
+    
 }
