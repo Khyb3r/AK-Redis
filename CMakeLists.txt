@@ -19,7 +19,10 @@ find_package(Threads REQUIRED)
 # Server binary
 add_executable(ak_redis_server
         server/server.cpp
-        server/main.cpp)
+        server/main.cpp
+        server/UserConnection.cpp
+        server/UserConnection.h
+)
 
 target_include_directories(ak_redis_server PRIVATE ${asio_SOURCE_DIR}/asio/include)
 

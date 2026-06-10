@@ -2,15 +2,29 @@
 #include <iostream>
 #include <string>
 #include "asio.hpp"
+#include "server.h"
 #define MAX_BUFFER_SIZE 512
 
 using asio::ip::tcp;
-
+void old_non_async_main_method();
 
 int main()
 {
+    try {
+        asio::io_context io_context;
+        Server server(io_context);
+        io_context.run();
+    }
+    catch (std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
 
-    try 
+    return 0;
+}
+
+
+void old_non_async_main_method() {
+    try
     {
 
         asio::io_context io_context;
@@ -57,6 +71,4 @@ int main()
     {
         std::cerr <<e.what() <<std::endl;
     }
-
-    return 0;
 }
